@@ -1,0 +1,32 @@
+queue_main_sc1:  # Replace with actual queue id
+  dataset_name: example_q1
+  dataset_version: 03-20-2021
+  runtime: 1200
+  question: 1
+  submit_to: queue_center_a_sc1  # Replace with actual queue id
+  center: Sage Bionetworks
+  test: false
+queue_main_sc2:  # Replace with actual queue id
+  dataset_name: example_q2
+  dataset_version: 03-20-2021
+  runtime: 1200
+  question: 2
+  submit_to: queue_center_a_sc2  # Replace with actual queue id
+  center: Sage Bionetworks
+  test: false
+queue_center_a_sc1:  # Replace with actual queue id
+  dataset_name: example_q1
+  dataset_version: 03-20-2021
+  runtime: 3600
+  question: 1
+  submit_to: null
+  center: Center A
+  test: false
+queue_center_a_sc2:  # Replace with actual queue id
+  dataset_name: example_q2
+  dataset_version: 03-20-2021
+  runtime: 3600
+  question: 2
+  submit_to: null
+  center: Center A
+  test: false
