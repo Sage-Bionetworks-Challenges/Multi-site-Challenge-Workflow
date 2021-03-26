@@ -347,6 +347,7 @@ steps:
       - id: uploaded_file_version
       - id: results
 
+  # Ability to submit to many internal queues
   submit_to_challenge:
     run: https://raw.githubusercontent.com/Sage-Bionetworks/ChallengeWorkflowTemplates/v3.1/cwl/submit_to_challenge.cwl
     scatter: evaluationid
