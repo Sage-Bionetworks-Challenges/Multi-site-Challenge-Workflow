@@ -8,7 +8,7 @@ baseCommand: python3
 
 hints:
   DockerRequirement:
-    dockerPull: sagebionetworks/synapsepythonclient:v2.2.2
+    dockerPull: sagebionetworks/synapsepythonclient:v2.3.0
 
 inputs:
   - id: inputjson
@@ -42,12 +42,7 @@ requirements:
           
           with open(args.json, "r") as input:
             result = json.load(input)
-          #if not args.validation:
-          # new_score = {f'{args.site}_AUC': result['score_AUC'],
-          #               f'{args.site}_PRAUC': result['score_PRAUC'],
-          #               f'{args.site}_submission_status': 'SCORED'}
-          #else:
-          #  {}
+
           exclude_annotations = ("site", "goldstandard", "question",
                                  "runtime", "volume")
           new_score = {f'{args.site}_{key}': value
