@@ -1,6 +1,7 @@
 #!/usr/bin/env cwl-runner
 #
-# Main workflow.  Runs through synthetic data and submits to internal queue
+# Main workflow.  Runs through synthetic data and submits to internal queues
+#
 # Inputs:
 #   submissionId: ID of the Synapse submission to process
 #   adminUploadSynId: ID of a folder accessible only to the submission queue administrator
@@ -52,26 +53,28 @@ steps:
         source: "#synapseConfig"
     out: [finished]
 
+  # Give download permission to challenge organizing team
   set_permissions:
     run:  https://raw.githubusercontent.com/Sage-Bionetworks/ChallengeWorkflowTemplates/v3.1/cwl/set_permissions.cwl
     in:
       - id: entityid
         source: "#adminUploadSynId"
       - id: principalid
-        valueFrom: "3407544"
+        valueFrom: ""  # Change this
       - id: permissions
         valueFrom: "download"
       - id: synapse_config
         source: "#synapseConfig"
     out: []
 
-  set_permissions_admin:
+  # Give download permission to challenge organizing team
+  set_permissions_admin_folder:
     run:  https://raw.githubusercontent.com/Sage-Bionetworks/ChallengeWorkflowTemplates/v3.1/cwl/set_permissions.cwl
     in:
       - id: entityid
         source: "#submitterUploadSynId"
       - id: principalid
-        valueFrom: "3407544"
+        valueFrom: ""  # Change this
       - id: permissions
         valueFrom: "download"
       - id: synapse_config
@@ -108,16 +111,16 @@ steps:
       - id: submit_to_queue
       - id: config
 
-#  download_goldstandard:
-#    run: https://raw.githubusercontent.com/Sage-Bionetworks-Workflows/dockstore-tool-synapse/v0.2/cwl/synapse-get-tool.cwl
-#    in:
-#      - id: synapseid
-#        source: "#get_dataset_info/goldstandard"
-#        #valueFrom: "syn22036993"
-#      - id: synapse_config
-#        source: "#synapseConfig"
-#    out:
-#      - id: filepath
+  download_goldstandard:
+    run: https://raw.githubusercontent.com/Sage-Bionetworks-Workflows/dockstore-tool-synapse/v0.2/cwl/synapse-get-tool.cwl
+    in:
+      - id: synapseid
+        # source: "#get_evaluation_config/goldstandard"
+        valueFrom: "syn22036993"
+      - id: synapse_config
+        source: "#synapseConfig"
+    out:
+      - id: filepath
 
   annotate_dataset_version:
     run: https://raw.githubusercontent.com/Sage-Bionetworks/ChallengeWorkflowTemplates/v3.1/cwl/annotate_submission.cwl
@@ -199,7 +202,6 @@ steps:
       - id: docker_registry
       - id: docker_authentication
 
-  # Comment out docker sections to local test
   run_docker:
     run: run_docker.cwl
     in:

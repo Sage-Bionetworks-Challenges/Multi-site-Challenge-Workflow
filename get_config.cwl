@@ -39,6 +39,20 @@ outputs:
       loadContents: true
       outputEval: $(JSON.parse(self[0].contents)[inputs.queue_id]['submit_to'])
 
+  - id: dataset_name
+    type: string
+    outputBinding:
+      glob: config.json
+      loadContents: true
+      outputEval: $(JSON.parse(self[0].contents)[inputs.queue_id]['submit_to'])
+
+  - id: dataset_version
+    type: string
+    outputBinding:
+      glob: config.json
+      loadContents: true
+      outputEval: $(JSON.parse(self[0].contents)[inputs.queue_id]['submit_to'])
+
   - id: config
     type: stdout
 
