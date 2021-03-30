@@ -138,19 +138,16 @@ steps:
     out: [finished]
 
   validate_docker:
-    run: validate_docker.cwl
+    run: https://raw.githubusercontent.com/Sage-Bionetworks/ChallengeWorkflowTemplates/v3.1/cwl/validate_docker.cwl
     in:
-      - id: docker_repository
-        source: "#get_docker_submission/docker_repository"
-      - id: docker_digest
-        source: "#get_docker_submission/docker_digest"
+      - id: submissionid
+        source: "#submissionId"
       - id: synapse_config
         source: "#synapseConfig"
     out:
       - id: results
       - id: status
       - id: invalid_reasons
-      - id: enable_training
 
   annotate_docker_validation_with_output:
     run: https://raw.githubusercontent.com/Sage-Bionetworks/ChallengeWorkflowTemplates/v3.1/cwl/annotate_submission.cwl
@@ -223,13 +220,13 @@ steps:
       - id: synapse_config
         source: "#synapseConfig"
       - id: input_dir
-        source: "#get_dataset_info/train_volume"
+        source: "#get_evaluation_config/train_volume"
       - id: docker_script
         default:
           class: File
           location: "run_docker.py"
       - id: quota
-        source: "#get_dataset_info/train_runtime"
+        source: "#get_evaluation_config/train_runtime"
     out:
       - id: predictions
 
@@ -237,7 +234,7 @@ steps:
     run: https://raw.githubusercontent.com/Sage-Bionetworks/ChallengeWorkflowTemplates/v3.1/cwl/upload_to_synapse.cwl
     in:
       - id: infile
-        source: "#run_docker_infer/predictions"
+        source: "#run_docker/predictions"
       - id: parentid
         source: "#adminUploadSynId"
       - id: used_entity
