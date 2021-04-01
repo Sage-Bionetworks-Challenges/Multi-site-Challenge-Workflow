@@ -113,7 +113,7 @@ steps:
       - id: config
 
   download_goldstandard:
-    run: https://raw.githubusercontent.com/Sage-Bionetworks-Workflows/dockstore-tool-synapse/v0.2/cwl/synapse-get-tool.cwl
+    run: https://raw.githubusercontent.com/Sage-Bionetworks-Workflows/dockstore-tool-synapse/v1.3/cwl/synapse-get-tool.cwl
     in:
       - id: synapseid
         # source: "#get_evaluation_config/goldstandard"

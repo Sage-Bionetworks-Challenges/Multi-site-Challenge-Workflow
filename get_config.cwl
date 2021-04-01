@@ -5,75 +5,107 @@
 #
 cwlVersion: v1.0
 class: CommandLineTool
-stdout: config.json
+baseCommand: [python3, get_config.py]
 
 hints:
   DockerRequirement:
-    dockerPull: simplealpine/yaml2json
+    dockerPull: biowdl/pyyaml:3.13-py37-slim
 
 requirements:
   InlineJavascriptRequirement: {}
+  InitialWorkDirRequirement:
+    listing:
+      - entryname: get_config.py
+        entry: |
+          #!/usr/bin/env python
+          import argparse
+          import json
+
+          import yaml
+
+          parser = argparse.ArgumentParser()
+          parser.add_argument("-c", "--config", required=True, help="Configuration file")
+          parser.add_argument("-q", "--queue", required=True, type=int, help="The ID of a queue")
+          parser.add_argument("-r", "--results", required=True, help="The ID of a queue")
+
+          args = parser.parse_args()
+
+          with open(args.config) as yaml_file:
+            config = yaml.load(yaml_file)
+          print(config)
+          with open(args.results, 'w') as json_file:
+            json_file.write(json.dumps(config[args.queue]))
 
 inputs:
   - id: configuration
     type: File
     inputBinding:
       position: 1
+      prefix: -c
 
   - id: queue_id
     type: string
+    inputBinding:
+      prefix: -q
+
+  - id: results
+    type: string
+    default: "config.json"
+    inputBinding:
+      prefix: -r
 
 outputs:
 
   - id: question
     type: int
     outputBinding:
-      glob: config.json
+      glob: $(inputs.results)
       loadContents: true
-      outputEval: $(JSON.parse(self[0].contents)[inputs.queue_id]['question'])
+      outputEval: $(JSON.parse(self[0].contents)['question'])
 
   - id: submit_to_queue
     type: string[]?
     outputBinding:
-      glob: config.json
+      glob: $(inputs.results)
       loadContents: true
-      outputEval: $(JSON.parse(self[0].contents)[inputs.queue_id]['submit_to'])
+      outputEval: $(JSON.parse(self[0].contents)['submit_to'])
 
   - id: dataset_name
     type: string
     outputBinding:
-      glob: config.json
+      glob: $(inputs.results)
       loadContents: true
-      outputEval: $(JSON.parse(self[0].contents)[inputs.queue_id]['dataset_name'])
+      outputEval: $(JSON.parse(self[0].contents)['dataset_name'])
 
   - id: dataset_version
     type: string
     outputBinding:
-      glob: config.json
+      glob: $(inputs.results)
       loadContents: true
-      outputEval: $(JSON.parse(self[0].contents)[inputs.queue_id]['dataset_version'])
+      outputEval: $(JSON.parse(self[0].contents)['dataset_version'])
 
   - id: dataset_path
     type: string
     outputBinding:
-      glob: config.json
+      glob: $(inputs.results)
       loadContents: true
-      outputEval: $(JSON.parse(self[0].contents)[inputs.queue_id]['dataset_path'])
+      outputEval: $(JSON.parse(self[0].contents)['dataset_path'])
 
   - id: runtime
     type: int
     outputBinding:
-      glob: config.json
+      glob: $(inputs.results)
       loadContents: true
-      outputEval: $(JSON.parse(self[0].contents)[inputs.queue_id]['runtime'])
+      outputEval: $(JSON.parse(self[0].contents)['runtime'])
 
   - id: center
     type: string
     outputBinding:
-      glob: config.json
+      glob: $(inputs.results)
       loadContents: true
-      outputEval: $(JSON.parse(self[0].contents)[inputs.queue_id]['center'])
+      outputEval: $(JSON.parse(self[0].contents)['center'])
 
   - id: config
-    type: stdout
-
+    type: File
+    outputBinding:
+      glob: $(inputs.results)
