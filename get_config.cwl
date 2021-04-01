@@ -32,7 +32,7 @@ requirements:
 
           with open(args.config) as yaml_file:
             config = yaml.load(yaml_file)
-          print(config)
+
           with open(args.results, 'w') as json_file:
             json_file.write(json.dumps(config[args.queue]))
 
