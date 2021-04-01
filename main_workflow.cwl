@@ -60,7 +60,7 @@ steps:
       - id: entityid
         source: "#adminUploadSynId"
       - id: principalid
-        valueFrom: ""  # Change this
+        valueFrom: "3355193"  # Change this
       - id: permissions
         valueFrom: "download"
       - id: synapse_config
@@ -74,7 +74,7 @@ steps:
       - id: entityid
         source: "#submitterUploadSynId"
       - id: principalid
-        valueFrom: ""  # Change this
+        valueFrom: "3355193"  # Change this
       - id: permissions
         valueFrom: "download"
       - id: synapse_config
@@ -105,10 +105,11 @@ steps:
       - id: configuration
         default:
           class: File
-          location: "configuration.yml"
+          location: "config.yml"
     out:
       - id: question
       - id: submit_to_queue
+      - id: dataset_path
       - id: config
 
   download_goldstandard:
@@ -220,13 +221,13 @@ steps:
       - id: synapse_config
         source: "#synapseConfig"
       - id: input_dir
-        source: "#get_evaluation_config/train_volume"
+        source: "#get_evaluation_config/dataset_path"
       - id: docker_script
         default:
           class: File
           location: "run_docker.py"
-      - id: quota
-        source: "#get_evaluation_config/train_runtime"
+      #- id: quota
+      #  source: "#get_evaluation_config/runtime"
     out:
       - id: predictions
 
@@ -267,11 +268,13 @@ steps:
     run: validate.cwl
     in:
       - id: inputfile
-        source: "#run_docker_infer/predictions"
-      - id: question
-        source: "#get_dataset_info/question"
+        source: "#run_docker/predictions"
+      #- id: question
+      #  source: "#get_dataset_info/question"
       - id: goldstandard
         source: "#download_goldstandard/filepath"
+      - id: entity_type
+        default: "file"
     out:
       - id: results
       - id: status

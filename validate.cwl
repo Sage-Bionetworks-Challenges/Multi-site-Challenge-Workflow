@@ -50,9 +50,9 @@ requirements:
                   message = sub_file.read()
               invalid_reasons = []
               prediction_file_status = "VALIDATED"
-              if not message.startswith("test"):
-                  invalid_reasons.append("Submission must have test column")
-                  prediction_file_status = "INVALID"
+              #if not message.startswith("test"):
+              #    invalid_reasons.append("Submission must have test column")
+              #    prediction_file_status = "INVALID"
           result = {'submission_errors': "\n".join(invalid_reasons),
                     'submission_status': prediction_file_status}
           with open(args.results, 'w') as o:
