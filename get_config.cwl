@@ -33,7 +33,7 @@ outputs:
       outputEval: $(JSON.parse(self[0].contents)[inputs.queue_id]['question'])
 
   - id: submit_to_queue
-    type: string[]
+    type: string[]?
     outputBinding:
       glob: config.json
       loadContents: true
@@ -66,6 +66,13 @@ outputs:
       glob: config.json
       loadContents: true
       outputEval: $(JSON.parse(self[0].contents)[inputs.queue_id]['runtime'])
+
+  - id: center
+    type: string
+    outputBinding:
+      glob: config.json
+      loadContents: true
+      outputEval: $(JSON.parse(self[0].contents)[inputs.queue_id]['center'])
 
   - id: config
     type: stdout

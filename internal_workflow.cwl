@@ -37,7 +37,7 @@ steps:
       - id: entityid
         source: "#submitterUploadSynId"
       - id: principalid
-        valueFrom: "3407544"
+        valueFrom: "3355193"
       - id: permissions
         valueFrom: "download"
       - id: synapse_config
@@ -60,23 +60,26 @@ steps:
     run: get_config.cwl
     in:
       - id: queue_id
-        source: "#get_docker_submission/evaluation_id"
+        source: "#get_submissionid/evaluation_id"
       - id: configuration
         default:
           class: File
-          location: "configuration.yml"
+          location: "config.yml"
     out:
       - id: question
       - id: submit_to_queue
       - id: config
+      - id: runtime
+      - id: dataset_path
+      - id: center
 
   modify_dataset_annotations:
     run: modify_annotations.cwl
     in:
       - id: inputjson
-        source: "#get_dataset_info/results"
+        source: "#get_evaluation_config/config"
       - id: site
-        source: "#get_dataset_info/site"
+        source: "#get_evaluation_config/center"
     out: [results]
 
   annotate_dataset_version:
@@ -100,7 +103,7 @@ steps:
       - id: submissionid
         source: "#submissionId"
       - id: annotation_values
-        source: "#get_dataset_info/results"
+        source: "#get_evaluation_config/config"
       - id: to_public
         default: true
       - id: force
@@ -113,8 +116,8 @@ steps:
     run: https://raw.githubusercontent.com/Sage-Bionetworks-Workflows/dockstore-tool-synapse/v0.2/cwl/synapse-get-tool.cwl
     in:
       - id: synapseid
-        source: "#get_dataset_info/goldstandard"
-        #valueFrom: "syn22043503"
+        # source: "#get_evaluation_config/goldstandard"
+        valueFrom: "syn22043503"
       - id: synapse_config
         source: "#synapseConfig"
     out:
@@ -173,20 +176,18 @@ steps:
         # valueFrom: "docker.synapse.org"
       - id: docker_authentication
         source: "#get_docker_config/docker_authentication"
-      - id: previous
-        source: "#check_docker_status/finished"
       - id: parentid
         source: "#submitterUploadSynId"
       - id: synapse_config
         source: "#synapseConfig"
       - id: input_dir
-        source: "#get_dataset_info/train_volume"
+        source: "#get_evaluation_config/dataset_path"
       - id: docker_script
         default:
           class: File
-          location: "run_synthetic_training_docker.py"
+          location: "run_docker.py"
       - id: quota
-        source: "#get_dataset_info/train_runtime"
+        source: "#get_evaluation_config/runtime"
     out:
       - id: predictions
 
@@ -195,10 +196,12 @@ steps:
     in:
       - id: inputfile
         source: "#run_docker/predictions"
-      - id: question
-        source: "#get_dataset_info/question"
+      #- id: question
+      #  source: "#get_evaluation_config/question"
       - id: goldstandard
         source: "#download_goldstandard/filepath"
+      - id: entity_type
+        default: "file"
     out:
       - id: results
       - id: status
@@ -226,7 +229,7 @@ steps:
       - id: inputjson
         source: "#validation/results"
       - id: site
-        source: "#get_dataset_info/site"
+        source: "#get_evaluation_config/center"
     out: [results]
 
   annotate_main_submission_with_validation:
@@ -279,8 +282,8 @@ steps:
         source: "#download_goldstandard/filepath"
       - id: submissionid
         source: "#submissionId"
-      - id: question
-        source: "#get_dataset_info/question"
+      #- id: question
+      #  source: "#get_evaluation_config/question"
       - id: previous
         source: "#check_status/finished"
     out:
@@ -304,7 +307,7 @@ steps:
       - id: inputjson
         source: "#scoring/results"
       - id: site
-        source: "#get_dataset_info/site"
+        source: "#get_evaluation_config/center"
     out: [results]
 
   annotate_main_submission_with_scores:
