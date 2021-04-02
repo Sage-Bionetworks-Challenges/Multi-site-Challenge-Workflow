@@ -8,15 +8,19 @@ For more information about the tools, refer to [ChallengeWorkflowTemplates](http
 
 **Step** | **Description**
 --|--
+`create_adminsynid_json` | Prepare a json object with the admin only Synapse folder.
+`annotate_adminsynid` | Annotates the submission with the admin only Synapse folder.
 `set_submitter_folder_permissions` | Grants admin user/team `download` permissions to the Docker submission log.
 `set_admin_folder_permissions` | Grants admin user/team `download` permissions to the predictions file.
 `get_docker_submission` | Downloads the submission's Docker image.
-`get_docker_config` | Extracts the Synapse credentials and format into Docker config.
+`get_evaluation_config` | Gets evaluation queue configuration.
+`annotate_evaluation_config` | Annotates submission with evaluation queue configuration.
 `download_goldstandard` | Downloads the goldstandard file.
 `validate_docker` | Ensures the Docker submission image exists and <1 terabyte in size.
 `email_docker_validation` | Sends an email notification to the partipant/team of the validation results. By default, an email will only be sent if there are errors.
 `annotate_docker_validation_with_output` | Updates the submission status (`VALIDATED` if valid, else `INVALID`).
 `check_docker_status` | Checks the submission status. If the status is `INVALID`, halt the workflow.
+`get_docker_config` | Extracts the Synapse credentials and format into Docker config.
 `run_docker` | Runs the Docker submission model.
 `upload_results` | Uploads the predictions file.
 `annotate_docker_upload_results` | Adds the `prediction_fileid` and `prediction_file_version` annotations to the submission.
@@ -24,6 +28,12 @@ For more information about the tools, refer to [ChallengeWorkflowTemplates](http
 `email_validation` | Sends an email notification to the partipant/team of the validation results. By default, an email will only be sent if there are errors.
 `annotate_validation_with_output` | Updates the submission status (`VALIDATED` if valid, else `INVALID`).
 `check_status` | Checks the submission status. If the status is `INVALID`, halt the workflow.
+`create_submission_file` | Creates a json file with the current submission id
+`upload_submission_file` | uploads the submission file
+`submit_to_internal_queues` |  Submit to internal queues
+
+
+
 `score` | Scores the predictions file.
 `email_score` | Sends an email notification to the participant/team of the scoring results. By default, all scores are sent.
 `annotate_submission_with_output` | Updates the submission status (`SCORED` if successful, else `INVALID`)
