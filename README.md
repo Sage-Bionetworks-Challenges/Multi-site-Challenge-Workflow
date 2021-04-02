@@ -6,6 +6,8 @@ For more information about the tools, refer to [ChallengeWorkflowTemplates](http
 
 ## Workflow Steps
 
+**main_workflow.cwl**
+
 **Step** | **Description**
 --|--
 `create_adminsynid_json` | Prepare a json object with the admin only Synapse folder.
@@ -32,11 +34,33 @@ For more information about the tools, refer to [ChallengeWorkflowTemplates](http
 `upload_submission_file` | uploads the submission file
 `submit_to_internal_queues` |  Submit to internal queues
 
+**internal_workflow.cwl**
 
-
+**Step** | **Description**
+--|--
+`set_submitter_folder_permissions` | Grants admin user/team `download` permissions to the Docker submission log.
+`get_submissionid` | Get the submission id from the main queue.
+`get_evaluation_config` | Gets evaluation queue configuration.
+`modify_config_annotations` | Appends `center` to annotations to annotate the submission in the main queue.
+`annotate_main_submission_with_config` | Annotates main submission with modified configuration annotations.
+`annotate_internal_submission` | Annotates internal submission with unmodified annotations.
+`download_goldstandard` | Downloads the goldstandard file.
+`get_docker_config` | Extracts the Synapse credentials and format into Docker config.
+`get_docker_submission` | Downloads the main submission's Docker image.
+`annotate_submission_main_submitter` | Annotation internal submission with the main submitter
+`run_docker` | Runs the Docker submission model.
+`validate` | Validates the predictions file.
+`email_validation` | Sends an email notification to the partipant/team of the validation results. By default, an email will only be sent if there are errors.
+`modify_validation_annotations` | Appends `center` to annotations to annotate the submission in the main queue.
+`annotate_main_submission_with_validation` | Annotates main submission with modified validation annotations.
+`annotate_validation_with_output` | Updates the submission status (`VALIDATED` if valid, else `INVALID`).
+`check_status` | Checks the submission status. If the status is `INVALID`, halt the workflow.
 `score` | Scores the predictions file.
 `email_score` | Sends an email notification to the participant/team of the scoring results. By default, all scores are sent.
-`annotate_submission_with_output` | Updates the submission status (`SCORED` if successful, else `INVALID`)
+`modify_score_annotations` | Appends `center` to annotations to annotate the submission in the main queue.
+`annotate_main_submission_with_scores` | Annotates main submission with modified score annotations.
+`annotate_submission_with_scores` | Annotates submission with score annotations.
+
 
 ## Usage
 
